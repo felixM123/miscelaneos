@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {NavController, NavParams } from 'ionic-angular';
+import {NavController, NavParams,AlertController,LoadingController} from 'ionic-angular';
 
 
 
@@ -9,7 +9,9 @@ import {NavController, NavParams } from 'ionic-angular';
 })
 export class Pagina2Page {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+                private alertCtrl:AlertController,
+              private loadingCtrl:LoadingController) {
   }
 
     ir_pagina3(){
@@ -34,23 +36,65 @@ export class Pagina2Page {
       console.log("ionViewWillUnload");
     }
     ionViewCanEnter(){
-      console.log("ionViewCanEnter")
+      console.log("ionViewCanEnter");
 
-      let numero=Math.round(Math.random()*10);
-      console.log(numero);
-      if (numero>=3) {
-          return true;
-      }else{
-        return false;
-      }
+      let promesa=new Promise((resolve,reject)=>{
+
+        let confirmar=this.alertCtrl.create({
+
+
+          title: '¿Seguro?',
+        subTitle: '¿Esta seguro que desea entrar?',
+        buttons: [
+          {
+            text: 'Cancelar',
+            handler: () => resolve(false)
+          },
+          {
+            text: 'Seguro',
+            handler: () => resolve(true)
+          }
+        ]
+        });
+
+        confirmar.present();
+
+
+
+
+
+      });
+
+      return promesa;
+
+
+
+    //  let numero=Math.round(Math.random()*10);
+    //  console.log(numero);
+    //  if (numero>=3) {
+    //      return true;
+    //  }else{
+    //    return false;
+    //  }
     }
     ionViewCanLeave(){
       console.log("ionViewCanLeave");
 
-      console.log("Espere 3 segundos para salir");
+      console.log("Espere 2 segundos para salir");
+
+      let loading =this.loadingCtrl.create({
+        content:"Espere por favor..."
+      });
+
+      loading.present();
+
+
+
+
 
       let promesa=new Promise((resolve,reject)=>{
         setTimeout(()=>{
+          loading.dismiss();
           resolve(true)
         },2000);
       })

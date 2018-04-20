@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController} from 'ionic-angular';
 import { HomePage} from "../home/home";
 
+import {AjustesProvider} from "../../providers/ajustes/ajustes";
 @IonicPage()
 @Component({
   selector: 'page-introduccion',
@@ -27,7 +28,8 @@ export class Introduccion {
   ];
 saltar_tutorial(){
 
-
+    this._ajustesP.ajustes.mostrar_tutorial=false;
+    this._ajustesP.guardar_storage();
 this.navCtrl.setRoot(HomePage);
 
 }
@@ -36,7 +38,8 @@ this.navCtrl.setRoot(HomePage);
 
 
 
-  constructor(public navCtrl: NavController) {
+  constructor(public navCtrl: NavController,
+              private _ajustesP : AjustesProvider) {
   }
 
 
